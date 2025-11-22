@@ -1,9 +1,6 @@
 //============================================================================
 // Name        : HashTable.cpp
 // Author      : Justin Guida
-// Version     : 1.0
-// Copyright   : Copyright � 2023 SNHU COCE
-// Description : Lab 4-2 Hash Table
 //============================================================================
 
 #include <algorithm>
@@ -588,3 +585,4 @@ void HashTable::Remove(const std::string& bidId) {
 
         return 0;
     }
+
