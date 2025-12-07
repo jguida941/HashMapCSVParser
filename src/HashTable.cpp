@@ -109,7 +109,6 @@ public:
     void Remove(const std::string& bidId);
     Bid  Search(const std::string& bidId);
     void PrintAll() const;
-    size_t Size();
 
     // Hash a string bidId into a bucket index using std::hash<string>
     // Supports alphanumeric IDs, unlike the int-based hash()
@@ -586,5 +585,6 @@ void HashTable::Remove(const std::string& bidId) {
 
         return 0;
     }
+
 
 
