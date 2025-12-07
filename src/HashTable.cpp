@@ -98,8 +98,6 @@ private:
 
     unsigned int tableSize = DEFAULT_SIZE;
 
-    unsigned int hash(int key);
-
 public:
     HashTable();
     HashTable(unsigned int size);
@@ -111,7 +109,6 @@ public:
     void PrintAll() const;
 
     // Hash a string bidId into a bucket index using std::hash<string>
-    // Supports alphanumeric IDs, unlike the int-based hash()
     unsigned int hash(const std::string& key) const;
 
 };
@@ -162,17 +159,6 @@ HashTable::~HashTable() {
     }
     // erase head the vector of heads
     nodes.clear();
-}
-
-/**
- * Calculate the hash value of a numeric key.
- * Keeps compatibility with legacy code that may pass ints.
- *
- * @param key The integer key to hash
- * @return The bucket index (0 ..tableSize-1)
- */
-unsigned int HashTable::hash(int key) {
-    return static_cast<unsigned int>(key) % tableSize;
 }
 
 /**
@@ -381,17 +367,37 @@ void HashTable::Remove(const std::string& bidId) {
      * @return a container holding all the bids read
      **/
     void loadBids(string csvPath, HashTable *hashTable) {
-        cout << "Loading CSV file " << csvPath << endl;
-
         // initialize the CSV Parser using the given path
         csv::Parser file = csv::Parser(csvPath);
 
-        // read and display header row - optional
-        vector<string> header = file.getHeader();
-        for (auto const &c: header) {
-            cout << c << " | ";
-        }
-        cout << "" << endl;
+        // display loading info in a themed box
+        size_t colCount = file.getHeader().size();
+        size_t rowCount = file.rowCount();
+        const size_t boxWidth = 42; // content width after "| "
+
+        cout << Color::BRIGHT_BLUE << "+-------------------------------------------+" << Color::RESET << endl;
+        cout << Color::BRIGHT_BLUE << "|            " << Color::BRIGHT_CYAN << "Loading CSV Data" << Color::BRIGHT_BLUE << "               |" << Color::RESET << endl;
+        cout << Color::BRIGHT_BLUE << "+-------------------------------------------+" << Color::RESET << endl;
+
+        // File row
+        string fileContent = "File: " + csvPath;
+        cout << Color::BRIGHT_BLUE << "| " << Color::BRIGHT_YELLOW << "File: " << Color::RESET << csvPath;
+        for (size_t i = fileContent.length(); i < boxWidth; ++i) cout << " ";
+        cout << Color::BRIGHT_BLUE << "|" << Color::RESET << endl;
+
+        // Columns row
+        string colContent = "Columns: " + to_string(colCount);
+        cout << Color::BRIGHT_BLUE << "| " << Color::BRIGHT_YELLOW << "Columns: " << Color::RESET << colCount;
+        for (size_t i = colContent.length(); i < boxWidth; ++i) cout << " ";
+        cout << Color::BRIGHT_BLUE << "|" << Color::RESET << endl;
+
+        // Rows row
+        string rowContent = "Rows: " + to_string(rowCount);
+        cout << Color::BRIGHT_BLUE << "| " << Color::BRIGHT_YELLOW << "Rows: " << Color::RESET << rowCount;
+        for (size_t i = rowContent.length(); i < boxWidth; ++i) cout << " ";
+        cout << Color::BRIGHT_BLUE << "|" << Color::RESET << endl;
+
+        cout << Color::BRIGHT_BLUE << "+-------------------------------------------+" << Color::RESET << endl;
 
         try {
             // loop to read rows of a CSV file
@@ -486,12 +492,12 @@ void HashTable::Remove(const std::string& bidId) {
             cout << Color::BRIGHT_BLUE << "|      eBid Bidder HashTable System         |" << Color::RESET << endl;
             cout << Color::BRIGHT_BLUE << "+-------------------------------------------+" << Color::RESET << endl;
             cout << Color::BRIGHT_BLUE << "|                                           |" << Color::RESET << endl;
-            cout << Color::BRIGHT_BLUE << "|   " << Color::BRIGHT_YELLOW << "[1]" << Color::RESET << " Load Bids                           |" << Color::RESET << endl;
-            cout << Color::BRIGHT_BLUE << "|   " << Color::BRIGHT_YELLOW << "[2]" << Color::RESET << " Display All Bids                    |" << Color::RESET << endl;
-            cout << Color::BRIGHT_BLUE << "|   " << Color::BRIGHT_YELLOW << "[3]" << Color::RESET << " Find Bid                            |" << Color::RESET << endl;
-            cout << Color::BRIGHT_BLUE << "|   " << Color::BRIGHT_YELLOW << "[4]" << Color::RESET << " Remove Bid                          |" << Color::RESET << endl;
+            cout << Color::BRIGHT_BLUE << "|   " << Color::BRIGHT_YELLOW << "[1]" << Color::RESET << " Load Bids                           " << Color::BRIGHT_BLUE << "|" << Color::RESET << endl;
+            cout << Color::BRIGHT_BLUE << "|   " << Color::BRIGHT_YELLOW << "[2]" << Color::RESET << " Display All Bids                    " << Color::BRIGHT_BLUE << "|" << Color::RESET << endl;
+            cout << Color::BRIGHT_BLUE << "|   " << Color::BRIGHT_YELLOW << "[3]" << Color::RESET << " Find Bid                            " << Color::BRIGHT_BLUE << "|" << Color::RESET << endl;
+            cout << Color::BRIGHT_BLUE << "|   " << Color::BRIGHT_YELLOW << "[4]" << Color::RESET << " Remove Bid                          " << Color::BRIGHT_BLUE << "|" << Color::RESET << endl;
             cout << Color::BRIGHT_BLUE << "|                                           |" << Color::RESET << endl;
-            cout << Color::BRIGHT_BLUE << "|   " << Color::BRIGHT_YELLOW << "[9]" << Color::RESET << " Exit                                |" << Color::RESET << endl;
+            cout << Color::BRIGHT_BLUE << "|   " << Color::BRIGHT_YELLOW << "[9]" << Color::RESET << " Exit                                " << Color::BRIGHT_BLUE << "|" << Color::RESET << endl;
             cout << Color::BRIGHT_BLUE << "|                                           |" << Color::RESET << endl;
             cout << Color::BRIGHT_BLUE << "+-------------------------------------------+" << Color::RESET << endl;
             cout << endl; // newline for spacing
@@ -585,6 +591,5 @@ void HashTable::Remove(const std::string& bidId) {
 
         return 0;
     }
-
 
 

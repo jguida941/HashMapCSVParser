@@ -76,7 +76,7 @@ The `HashTable.cpp` file was the primary focus of this assignment. The following
 
 *   **Hash Table with Chaining:** A hash table was built from the ground up to store bid information. It uses the chaining method with linked lists to resolve hash collisions, ensuring that multiple items hashing to the same bucket can be stored correctly.
 
-*   **String-Based Hashing:** The hash function was overloaded to support modern alphanumeric string keys (`bidId`), making the system more robust and flexible compared to using only integer-based keys.
+*   **String-Based Hashing:** The hash function uses `std::hash<string>` to hash alphanumeric `bidId` keys into bucket indices, allowing flexible support for any string-based identifiers.
 
 *   **Enhanced User Interface:**
     *   **ANSI Colors:** The console menu and output were improved with ANSI color codes to make the interface more readable and user-friendly.
