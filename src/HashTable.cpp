@@ -210,7 +210,8 @@ void HashTable::Insert(const Bid& bid) {
     unsigned int bucket_index = hash(bid.bidId);
     Node* head = &nodes[bucket_index];
 
-    // if the bucket is empty, store bid in the head
+    // In each bucket, nodes[bucket_index] is a head node.
+    // head.key == UINT_MAX means "this bucket is empty".
     if (head->key == UINT_MAX) {
         head->key = bucket_index;
         head->bid = bid;
@@ -585,4 +586,5 @@ void HashTable::Remove(const std::string& bidId) {
 
         return 0;
     }
+
 
