@@ -4,13 +4,17 @@
 
 **Author:** Justin Guida
 
-https://github.com/user-attachments/assets/537b99c2-9017-40db-82b1-be16d49a217e
-
-
-
 ## Project Overview
 
 This project is a C++ application developed for the CS300 Data Structures course. It implements a hash table to load, store, and manage bid data from a CSV file. The program provides a console-based interface for users to interact with the bid data.
+
+<br>
+
+https://github.com/user-attachments/assets/4dc46ecc-dfdb-4c4a-9d6b-e3a87a599dab
+
+<br>
+
+
 
 ## Prerequisites
 
