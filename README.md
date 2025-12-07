@@ -8,12 +8,11 @@
 
 This project is a C++ application developed for the CS300 Data Structures course. It implements a hash table to load, store, and manage bid data from a CSV file. The program provides a console-based interface for users to interact with the bid data.
 
-<br>
+## Hash Table Demo
 
-https://github.com/user-attachments/assets/e9559c91-8468-4f31-bbf3-26ae16e6c1c6
+Interactive console demo of the hash table in action:
 
-<br>
-
+![Hash Table demo](https://github.com/user-attachments/assets/6b71e3f4-f92f-4154-abf5-bfaecf96994a)
 
 
 ## Prerequisites
