@@ -1,7 +1,12 @@
 # Hash Table Bid System
 
 **Course:** CS300 - Data Structures & Algorithms
+
 **Author:** Justin Guida
+
+https://github.com/user-attachments/assets/537b99c2-9017-40db-82b1-be16d49a217e
+
+
 
 ## Project Overview
 
