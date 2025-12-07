@@ -57,7 +57,7 @@ This script will automatically:
 
 ## Project Structure
 ```
-.
+HashMapCSVParser/
 ├── CMakeLists.txt
 ├── Makefile
 ├── License.txt
