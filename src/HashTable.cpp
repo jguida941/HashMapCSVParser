@@ -237,21 +237,76 @@ void HashTable::Insert(const Bid& bid) {
  * Output format: bucket_index, bidId, title, amount, fund
  */
 void HashTable::PrintAll() const {
+    // count total bids first
+    unsigned int bidCount = 0;
+    for (unsigned int i = 0; i < tableSize; ++i) {
+        const Node *iter = &nodes[i];
+        while (iter != nullptr) {
+            if (iter->key != UINT_MAX) bidCount++;
+            iter = iter->next;
+        }
+    }
+
+    // display header box
+    cout << Color::BRIGHT_BLUE << "+-----------------------------------------------------------------------------+" << Color::RESET << endl;
+    cout << Color::BRIGHT_BLUE << "|                              " << Color::BRIGHT_CYAN << "All Bids (" << bidCount << ")" << Color::BRIGHT_BLUE;
+    // pad the header to match box width (77 inner chars)
+    string countStr = to_string(bidCount);
+    for (size_t i = 0; i < 36 - countStr.length(); ++i) cout << " ";
+    cout << "|" << Color::RESET << endl;
+    cout << Color::BRIGHT_BLUE << "+-----------------------------------------------------------------------------+" << Color::RESET << endl;
+
+    // column headers with wide spacing
+    cout << Color::BRIGHT_YELLOW << "  ID          Title                            Amount          Fund" << Color::RESET << endl;
+    cout << Color::BRIGHT_BLUE << "  ----------  -------------------------------  --------------  ----------------" << Color::RESET << endl;
+
     // iterate through every bucket in the table
     for (unsigned int bucket_index = 0; bucket_index < tableSize; ++bucket_index) {
         const Node *iter = &nodes[bucket_index];
         // walk the chain for this bucket
         while (iter != nullptr) {
             if (iter->key != UINT_MAX) {
+                // format: ID, truncated title, amount, fund
+                string title = iter->bid.title;
+                if (title.length() > 31) title = title.substr(0, 28) + "...";
 
-                // output key, bidID, title, amount and fund
-                cout << iter->key << ", " << iter->bid.bidId << ", " << iter->bid.title << ", " << iter->bid.amount <<
-                        ", " << iter->bid.fund << endl;
+                cout << "  " << Color::BRIGHT_CYAN << iter->bid.bidId << Color::RESET;
+                // pad bidId to 12 chars
+                for (size_t i = iter->bid.bidId.length(); i < 12; ++i) cout << " ";
+
+                cout << title;
+                // pad title to 33 chars
+                for (size_t i = title.length(); i < 33; ++i) cout << " ";
+
+                // format amount - clean display without trailing zeros
+                double amt = iter->bid.amount;
+                string amtStr;
+                if (amt == static_cast<int>(amt)) {
+                    // whole number - no decimals needed
+                    amtStr = "$" + to_string(static_cast<int>(amt));
+                } else {
+                    // has decimals - show up to 2 decimal places
+                    amtStr = "$" + to_string(amt);
+                    size_t dotPos = amtStr.find('.');
+                    if (dotPos != string::npos && amtStr.length() > dotPos + 3) {
+                        amtStr = amtStr.substr(0, dotPos + 3);
+                    }
+                    // remove trailing zero if only one decimal
+                    if (amtStr.length() > 2 && amtStr.back() == '0' && amtStr[amtStr.length()-2] != '.') {
+                        amtStr.pop_back();
+                    }
+                }
+                cout << Color::BRIGHT_GREEN << amtStr << Color::RESET;
+                // pad amount to 16 chars
+                for (size_t i = amtStr.length(); i < 16; ++i) cout << " ";
+
+                cout << Color::MAGENTA << iter->bid.fund << Color::RESET << endl;
             }
-                //move to next node in chain
-                iter = iter->next;
+            iter = iter->next;
         }
     }
+
+    cout << Color::BRIGHT_BLUE << "+-----------------------------------------------------------------------------+" << Color::RESET << endl;
 }
 
 /**
